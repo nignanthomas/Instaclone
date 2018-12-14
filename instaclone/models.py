@@ -33,4 +33,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.username
 
-    
+    @classmethod
+    def search_profile(cls,search_term):
+        profiles = cls.objects.filter(Q(username__username=search_term) | Q(name__icontains=search_term))
+        return profiles
