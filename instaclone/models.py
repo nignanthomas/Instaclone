@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from django.db.models import Q
 
+
+# Create your models here.
 Gender=(
     ('Male','Male'),
     ('Female','Female'),
 )
-# Create your models here.
+
 class Location(models.Model):
     location_name = models.CharField(max_length=50)
 
@@ -22,7 +24,7 @@ class Location(models.Model):
         cls.objects.filter(location=location).delete()
 
 class Profile(models.Model):
-    profile_pic = models.ImageField(upload_to='profilepics/')
+    profile_pic = models.ImageField(upload_to='photos/')
     fullname = models.CharField(max_length=255)
     username = models.ForeignKey(User,on_delete=models.CASCADE)
     bio = HTMLField()
@@ -35,5 +37,36 @@ class Profile(models.Model):
 
     @classmethod
     def search_profile(cls,search_term):
-        profiles = cls.objects.filter(Q(username__username=search_term) | Q(name__icontains=search_term))
+        profiles = cls.objects.filter(Q(username__username=search_term) | Q(fullname__icontains=search_term))
         return profiles
+
+class Post(models.Model):
+    photo_pic = models.ImageField(upload_to = 'photos/')
+    caption = models.CharField(max_length=3000)
+    upload_by = models.ForeignKey(User,on_delete=models.CASCADE)
+    likes = models.IntegerField()
+    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    post_date=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.upload_by
+
+    def save_photo(self, user):
+        self.save()
+
+    @classmethod
+    def all_photos(cls):
+        all_photos = cls.objects.all()
+        return all_photos
+
+    @classmethod
+    def user_photos(cls, username):
+        photos = cls.objects.filter(uploaded_by__username=username)
+        return photos
+
+    @classmethod
+    def filter_by_caption(cls, search_term):
+        return cls.objects.filter(caption__icontains=search_term)
+
+    def save_photo(self, user):
+        self.save()
