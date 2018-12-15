@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+  <div class="row">
+    <p>Discover People</p>
+    <div class="col-md-3">
+
+    </div>
+  </div> <!-- end div row-->
+
+  <div class="row">
+    <p>Explore</p>
+    {% for post in posts %}
+    <div class="col-md-3">
+      <img src="{{post.photo_pic.url}}" alt="">
+    </div>
+  </div> <!-- end div row-->
+
+</div>
+
+
+
+
+{% endblock %}

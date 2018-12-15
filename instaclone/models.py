@@ -70,3 +70,21 @@ class Post(models.Model):
 
     def save_photo(self, user):
         self.save()
+
+
+class Comment(models.Model):
+    comment_content = models.CharField(max_length=300)
+    username = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+
+    def save_comment(self):
+        self.save()
+
+
+class Follower(models.Model):
+    username= models.ForeignKey(User,on_delete=models.CASCADE)
+    followers = models.ForeignKey(User)
+
+class Following(models.Model):
+    username= models.ForeignKey(User,on_delete=models.CASCADE)
+    followings = models.ForeignKey(User)
