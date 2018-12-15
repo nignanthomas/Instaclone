@@ -9,7 +9,7 @@ from .models import Post,Profile
 from django.db.models import Q
 
 # Create your views here.
-@login_required(login_url='/accounts/login/')
+# @login_required(login_url='/accounts/login/')
 def timeline(request):
     current_user=request.user
     posts= Post.objects.all()
@@ -17,3 +17,17 @@ def timeline(request):
     # form=CommentForm()
     # comments=Comment.objects.all()
     return render(request,'timeline.html',{"posts":posts,"profiles":profiles})
+
+
+# @login_required(login_url='/accounts/login/')
+def search_results(request):
+    if 'search' in request.GET and request.GET["search"]:
+        search_term = request.GET.get("user")
+        searched_users = Profile.search_profile(search_term)
+        message=f"Search results for: {search_term}"
+
+        return render(request,'search.html',{"message":message,"users":searched_users})
+
+    else:
+        message="You haven't searched for any term."
+        return render(request,'search.html',{"message":message})
