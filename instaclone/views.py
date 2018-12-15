@@ -11,7 +11,6 @@ from django.db.models import Q
 # Create your views here.
 # @login_required(login_url='/accounts/login/')
 def timeline(request):
-    current_user=request.user
     posts= Post.objects.all()
     profiles= Profile.objects.all()
     # form=CommentForm()
@@ -31,3 +30,13 @@ def search_results(request):
     else:
         message="You haven't searched for any term."
         return render(request,'search.html',{"message":message})
+
+
+# @login_required(login_url='/accounts/login/')
+def explore(request):
+    posts = Post.objects.all()
+    # form=CommentForm()
+    # comments=Comment.objects.all()
+
+
+    return render(request,"explore.html",{"posts":posts,})
