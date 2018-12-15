@@ -37,6 +37,4 @@ def explore(request):
     posts = Post.objects.all()
     # form=CommentForm()
     # comments=Comment.objects.all()
-
-
     return render(request,"explore.html",{"posts":posts,})
