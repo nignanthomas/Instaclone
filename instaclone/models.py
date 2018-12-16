@@ -81,10 +81,10 @@ class Comment(models.Model):
         self.save()
 
 
-class Follower(models.Model):
-    username= models.ForeignKey(User,on_delete=models.CASCADE)
-    followers = models.ForeignKey(User)
-
-class Following(models.Model):
-    username= models.ForeignKey(User,on_delete=models.CASCADE)
-    followings = models.ForeignKey(User)
+# class Follower(models.Model):
+#     username = models.ForeignKey(User)
+#     followers = models.ForeignKey(User)
+#
+# class Following(models.Model):
+#     username = models.ForeignKey(User)
+#     followings = models.ForeignKey(User)
