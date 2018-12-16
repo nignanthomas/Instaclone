@@ -38,3 +38,9 @@ def explore(request):
     # form=CommentForm()
     # comments=Comment.objects.all()
     return render(request,"explore.html",{"posts":posts,})
+
+
+# @login_required(login_url='/accounts/login/')
+def profile(request):
+    current_user = request.user
+    return render(request, "profile.html", {"current_user":current_user})
