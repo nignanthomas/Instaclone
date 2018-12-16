@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns=[
-    url(r'^$',views.timeline,name='Timeline'),
+    url(r'^$',views.timeline,name='timeline'),
 ]
 
 if settings.DEBUG:
