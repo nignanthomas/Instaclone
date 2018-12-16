@@ -21,7 +21,7 @@ def timeline(request):
 # @login_required(login_url='/accounts/login/')
 def search_results(request):
     if 'search' in request.GET and request.GET["search"]:
-        search_term = request.GET.get("user")
+        search_term = request.GET.get("search")
         searched_users = Profile.search_profile(search_term)
         message=f"Search results for: {search_term}"
 
