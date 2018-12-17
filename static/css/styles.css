@@ -73,5 +73,6 @@ a {
 .nav-icon {
   float: right;
   width: 26px;
+  margin-right: 20px;
   /* padding: 5px; */
 }
