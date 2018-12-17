@@ -5,16 +5,53 @@
 
 
 <div class="container">
-  <img src="{{current_user.profile_pic.url}}" alt="" width="200" height="200" class="rounded-circle">
-  <p class="mt-1">{{current_user.username.username}}</p>
-  <p>{{current_user.fullname}}</p>
 
-  {% autoescape on %}
-  <p>{{current_user.bio | safe}}</p>
-  {% endautoescape %}
+  <div class="row">
+    <div class="col-md-3">
+      <img src="{{user.profile_pic.url}}" alt="" width="200" height="200" class="rounded-circle">
+    </div>
 
-  <p>{{current_user.phonenumber}}</p>
-  <p>{{current_user.gender}}</p>
+    <div class="col-md-3">
+      <p class="mt-1 font-weight-bold font-italic">{{user.username.username}}</p>
+      <p>{{user.fullname}}</p>
+
+      {% if user == current_user %}
+      <a href="">
+        <button class="btn btn-warning"type="button" name="button">Edit Profile</button>
+      </a>
+
+      <p></p>
+
+      <a href="">
+        <button class="btn btn-success"type="button" name="button">Follow</button>
+      </a>
+      {% endif %}
+
+    </div>
+    <div class="col-md-3">
+      {% autoescape on %}
+      <p>{{user.bio | safe}}</p>
+      {% endautoescape %}
+
+      <p>{{user.phonenumber}}</p>
+      <p>{{user.gender}}</p>
+
+    </div>
+
+  </div>
+
+
+
+
+  <p class="mt-5 font-weight-bold" style="text-decoration: underline;">Photos</p>
+    <div class="row">
+      {% for post in posts %}
+      <div class="col-md-4">
+        <img src="{{post.photo_pic.url}}" alt="" width="300" height="200">
+      </div>
+      {% endfor %}
+    </div> <!-- end div row-->
+
 </div>
 
 

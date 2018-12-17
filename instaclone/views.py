@@ -3,6 +3,7 @@ from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Post,Profile
+from .forms import NewPostForm,ProfileForm,CommentForm
 # from .forms import PostForm,LocationForm,ProfileForm,CommentForm
 # from django.http import JsonResponse
 # import json
@@ -47,4 +48,21 @@ def explore(request):
 def profile(request):
     # current_user = request.user
     current_user = Profile.objects.get(username__id=1)
-    return render(request, "profile.html", {"current_user":current_user})
+    user = Profile.objects.get(username__id=1)
+    posts = Post.objects.filter(upload_by = user)
+    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,})
+
+
+def new_post(request):
+    current_user = Profile.objects.get(username__id=request.user.id)
+    if request.method == 'POST':
+        form = NewPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.upload_by = current_user
+            post.save()
+        return redirect('profile')
+
+    else:
+        form = NewPostForm()
+    return render(request, 'new_post.html', {"form": form})
