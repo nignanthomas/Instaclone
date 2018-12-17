@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container">
+  <img src="{{current_user.profile_pic.url}}" alt="" width="200" height="200" class="rounded-circle">
+  <p class="mt-1">{{current_user.username.username}}</p>
+  <p>{{current_user.fullname}}</p>
+
+  {% autoescape on %}
+  <p>{{current_user.bio | safe}}</p>
+  {% endautoescape %}
+
+  <p>{{current_user.phonenumber}}</p>
+  <p>{{current_user.gender}}</p>
+</div>
+
+
+{% endblock %}
