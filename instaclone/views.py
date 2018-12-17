@@ -13,9 +13,11 @@ from django.db.models import Q
 def timeline(request):
     posts= Post.objects.all()
     profiles= Profile.objects.all()
+    current_user = request.user
+
     # form=CommentForm()
     # comments=Comment.objects.all()
-    return render(request,'timeline.html',{"posts":posts,"profiles":profiles})
+    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user})
 
 
 # @login_required(login_url='/accounts/login/')
@@ -35,9 +37,10 @@ def search_results(request):
 # @login_required(login_url='/accounts/login/')
 def explore(request):
     posts = Post.objects.all()
+    profiles= Profile.objects.all()[:3]
     # form=CommentForm()
     # comments=Comment.objects.all()
-    return render(request,"explore.html",{"posts":posts,})
+    return render(request,"explore.html",{"posts":posts,"profiles":profiles,})
 
 
 # @login_required(login_url='/accounts/login/')

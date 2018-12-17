@@ -4,18 +4,27 @@
 
 
 <div class="container">
+  <p>Discover People</p>
   <div class="row">
-    <p>Discover People</p>
-    <div class="col-md-3">
-
+    {% for profile in profiles %}
+    <div class="col-md-4">
+      <div class="rounded text-center border border-primary pt-2" width="250" height="200">
+        <img src="{{profile.profile_pic.url}}" alt="" width="75" height="75" class="rounded-circle">
+        <p class="mt-1">{{profile.username.username}}</p>
+      </div>
     </div>
+    {% endfor %}
   </div> <!-- end div row-->
 
+
+  <div class="mb-5">
+  </div>
+
+  <p>Explore</p>
   <div class="row">
-    <p>Explore</p>
     {% for post in posts %}
-    <div class="col-md-3">
-      <img src="{{post.photo_pic.url}}" alt="">
+    <div class="col-md-4">
+      <img src="{{post.photo_pic.url}}" alt="" width="300" height="200">
     </div>
     {% endfor %}
   </div> <!-- end div row-->

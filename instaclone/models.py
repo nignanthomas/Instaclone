@@ -33,7 +33,7 @@ class Profile(models.Model):
     gender = models.CharField(max_length=15,choices=Gender,default="Male")
 
     def __str__(self):
-        return self.username
+        return self.username.username
 
     @classmethod
     def search_profile(cls,search_term):
@@ -43,13 +43,13 @@ class Profile(models.Model):
 class Post(models.Model):
     photo_pic = models.ImageField(upload_to = 'photos/')
     caption = models.CharField(max_length=3000)
-    upload_by = models.ForeignKey(User,on_delete=models.CASCADE)
-    likes = models.IntegerField()
+    upload_by = models.ForeignKey(Profile)
+    likes = models.IntegerField(default=0)
     location = models.ForeignKey(Location,on_delete=models.CASCADE)
     post_date=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.upload_by
+        return self.caption
 
     def save_photo(self, user):
         self.save()
