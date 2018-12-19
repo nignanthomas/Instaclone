@@ -16,7 +16,7 @@
       <p>{{user.fullname}}</p>
 
       {% if user == current_user %}
-      <a href="">
+      <a href="{% url 'edit-profile' %}">
         <button class="btn btn-warning"type="button" name="button"><img src="https://img.icons8.com/color/48/000000/pencil.png" width="24">Edit Profile</button>
       </a>
       <a href="/logout/">
