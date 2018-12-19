@@ -16,7 +16,7 @@
         <div class="users-image mt-5">
           <img src="{{user.profile_pic.url}}" class="rounded img-fluid" alt=""  width="75px" height="75px">
           <div class="search-username-center">
-            <p class="username profile-username"style="margin:auto;"><a href="/user-profile/{{user.id}}" style="color:black;"> {{user.username}}</a></p>
+            <p class="username profile-username"style="margin:auto;"><a href="{% url 'profile' user.username.id %}" style="color:black;"> {{user.username}}</a></p>
           </div>
         </div>
         <!-- </div> -->

@@ -17,15 +17,23 @@
 
       {% if user == current_user %}
       <a href="">
-        <button class="btn btn-warning"type="button" name="button">Edit Profile</button>
+        <button class="btn btn-warning"type="button" name="button"><img src="https://img.icons8.com/color/48/000000/pencil.png" width="24">Edit Profile</button>
+      </a>
+      <a href="/logout/">
+        <button class="btn btn-danger"type="button" name="button"> <img src="https://img.icons8.com/metro/48/000000/shutdown.png" width="24"> Logout</button>
       </a>
 
       <p></p>
 
+      {% endif %}
+
+      {% if user != current_user %}
       <a href="">
-        <button class="btn btn-success"type="button" name="button">Follow</button>
+        <button class="btn btn-success"type="button" name="button"><img src="https://img.icons8.com/color/48/000000/human-footprints.png" width="24">Follow</button>
       </a>
       {% endif %}
+
+
 
     </div>
     <div class="col-md-3">
@@ -44,10 +52,21 @@
 
 
   <p class="mt-5 font-weight-bold" style="text-decoration: underline;">Photos</p>
+  {% if user == current_user %}
+  <a href="{% url 'new-post' %}">
+    <button class="btn btn-success"type="button" name="button"><img src="https://img.icons8.com/nolan/48/000000/plus-math.png" width="24">  Add Photo</button>
+  </a>
+  {% endif %}
     <div class="row">
       {% for post in posts %}
       <div class="col-md-4">
+        <a href="{{post.photo_pic.url}}" data-fancybox="images" data-buttons='["zoom","slideShow","fullScreen","thumbs","share","close"]' data-caption='<p>{{post.upload_by.username}}</p>
+                                                                <p>{{post.caption}}</p>
+                                                                <p>Location: {{post.location}}</p>
+                                                                <input type="text" placeholder="Add Comment" name="" value="">
+                                                                <button type="submit" >Submit Comment</button>'>
         <img src="{{post.photo_pic.url}}" alt="" width="300" height="200">
+        </a>
       </div>
       {% endfor %}
     </div> <!-- end div row-->

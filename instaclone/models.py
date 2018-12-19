@@ -68,8 +68,8 @@ class Post(models.Model):
     def filter_by_caption(cls, search_term):
         return cls.objects.filter(caption__icontains=search_term)
 
-    def save_photo(self, user):
-        self.save()
+    def delete_photo(self, user):
+        self.delete()
 
 
 class Comment(models.Model):

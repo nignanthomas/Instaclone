@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 
 
 {% block content %}
@@ -24,7 +25,14 @@
               <footer class="location">{{post.location}}</footer>
             </div>
 
-            <img src="{{post.photo_pic.url}}?w=400&h=500&fit=crop" class="gallery-image">
+            <a href="{{post.photo_pic.url}}" data-fancybox="images" data-buttons='["zoom","slideShow","fullScreen","thumbs","share","close"]' data-caption='<p>{{post.upload_by.username}}</p>
+                                                                    <p>{{post.caption}}</p>
+                                                                    <p>Location: {{post.location}}</p>
+                                                                    <button type="submit" >Submit Comment</button>'>
+
+            <img src="{{post.photo_pic.url}}" class="gallery-image" height="500">
+            </a>
+
             <div class="card-body">
               <div class="card-footer-section">
                 <h5 class="card-title username">{{post.likes}} likes</h5>
@@ -32,12 +40,20 @@
                 <br>
                 <div id="card{{post.id}}" class="mt-2">
                   {%for comment in comments%}
-                  {%if comment.post == post.id%}
+                  {%if comment.post.id == post.id%}
                   <p>
-                    <strong>{{comment.username.username}}</strong> {{comment.comment}}
+                    <strong>{{comment.username.username}}</strong> {{comment.comment_content}}
                   </p>
                   {%endif%}
                   {%endfor%}
+
+                  <form  action="{%url 'timeline'%}" method="post" enctype="multipart/form-data">
+                      {%csrf_token%}
+
+                      {% bootstrap_form form%}
+                      <input type="submit" class="btn btn-success btn-md" value="Add Comment">
+                  </form>
+
                 </div>
 
               </div>
@@ -71,7 +87,7 @@
 
           <div class="users-image">
             <img src="{{profile.profile_pic.url}}" class="rounded img-fluid" alt="" width=75px height="75px">
-            <p  class="profile-username">  <a href="/user-profile/{{profile.id}}">{{profile.username}}</a></p>
+            <p  class="profile-username">  <a href="{% url 'profile' profile.username.id %}">{{profile.username}}</a></p>
 
           </div>
 
