@@ -16,14 +16,20 @@ def timeline(request):
     profiles= Profile.objects.all()
     current_user = request.user
 
+    comments=Comment.objects.all()
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
-        comment()
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.username = request.user
+            comment.post = post
+            comment.save()
+        return redirect('timeline')
+
     else:
         form = CommentForm()
 
-    # form=CommentForm()
-    comments=Comment.objects.all()
     return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form,})
 
 
@@ -74,18 +80,18 @@ def new_post(request):
     return render(request, 'new_post.html', {"form": form})
 
 
-def comment():
-    # if request.method == 'POST':
-    #     form = CommentForm(request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.username = request.user
-        comment.post = post
-        comment.save()
-    return redirect('timeline')
-
-    # else:
-    #     form = CommentForm()
+# def comment():
+#     if request.method == 'POST':
+#         form = CommentForm(request.POST)
+#         if form.is_valid():
+#             comment = form.save(commit=False)
+#             comment.username = request.user
+#             comment.post = post
+#             comment.save()
+#         return redirect('timeline')
+#
+#     else:
+#         form = CommentForm()
 
 @login_required(login_url='/accounts/login/')
 def edit_profile(request):
