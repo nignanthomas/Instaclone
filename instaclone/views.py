@@ -17,10 +17,11 @@ def timeline(request):
     current_user = request.user
 
     comments=Comment.objects.all()
-
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
+            post_id = int(request.POST.get("idpost"))
+            post = Post.objects.get(id = post_id)
             comment = form.save(commit=False)
             comment.username = request.user
             comment.post = post
@@ -58,11 +59,11 @@ def explore(request):
 
 @login_required(login_url='/accounts/login/')
 def profile(request,id):
-    # current_user = request.user
+    user_object = request.user
     current_user = Profile.objects.get(username__id=request.user.id)
     user = Profile.objects.get(username__id=id)
     posts = Post.objects.filter(upload_by = user)
-    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,})
+    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,"user_object":user_object,})
 
 @login_required(login_url='/accounts/login/')
 def new_post(request):
@@ -73,7 +74,7 @@ def new_post(request):
             post = form.save(commit=False)
             post.upload_by = current_user
             post.save()
-        return redirect('profile')
+        return redirect('timeline')
 
     else:
         form = NewPostForm()
@@ -96,14 +97,25 @@ def new_post(request):
 @login_required(login_url='/accounts/login/')
 def edit_profile(request):
     current_user=request.user
+    user_edit = Profile.objects.get(username__id=current_user.id)
     if request.method =='POST':
-        form=ProfileForm(request.POST,request.FILES)
+        form=ProfileForm(request.POST,request.FILES,instance=request.user.profile)
         if form.is_valid():
-            profile=form.save(commit=False)
-            profile.username = current_user
-            profile.save()
-
+            form.save()
+            print('success')
+            # new_name = form.cleaned_data["fullname"]
+            # new_bio = form.cleaned_data["bio"]
+            # new_email = form.cleaned_data["email"]
+            # new_phonenumber = form.cleaned_data["phonenumber"]
+            # new_gender = form.cleaned_data["gender"]
+            # new_pic = form.cleaned_data["profile_pic"]
+            # profile=form.save(commit=False)
+            # profile.username = current_user
+            # profile.save()
+            # user_edit.update(fullname = new_name,bio = new_bio,email = new_email,phonenumber = new_phonenumber,gender = new_gender,profile_pic = new_pic)
     else:
-        form=ProfileForm()
+        form=ProfileForm(instance=request.user.profile)
+        print('error')
 
-    return render(request,'edit_profile.html',{"form":form})
+
+    return render(request,'edit_profile.html',locals())

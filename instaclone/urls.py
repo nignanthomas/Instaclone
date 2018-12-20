@@ -10,7 +10,7 @@ urlpatterns=[
     url(r'^explore/', views.explore, name = 'explore'),
     url(r'^accounts/profile/(\d+)', views.profile, name = 'profile'),
     url(r'^new/post/', views.new_post, name = 'new-post'),
-    url(r'^accounts/profile/edit/', views.edit_profile, name = 'edit-profile'),
+    url(r'^accounts/edit-profile/', views.edit_profile, name = 'edit-profile'),
 
 
 ]

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from django.db.models import Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -24,13 +26,22 @@ class Location(models.Model):
         cls.objects.filter(location=location).delete()
 
 class Profile(models.Model):
-    profile_pic = models.ImageField(upload_to='photos/')
-    fullname = models.CharField(max_length=255)
-    username = models.ForeignKey(User,on_delete=models.CASCADE)
-    bio = HTMLField()
-    email = models.EmailField()
-    phonenumber = models.IntegerField()
-    gender = models.CharField(max_length=15,choices=Gender,default="Male")
+    profile_pic = models.ImageField(upload_to='photos/',null=True)
+    fullname = models.CharField(max_length=255,null=True)
+    username = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
+    bio = HTMLField(null=True)
+    email = models.EmailField(null=True)
+    phonenumber = models.IntegerField(null=True)
+    gender = models.CharField(max_length=15,choices=Gender,default="Male",null=True)
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+       if created:
+           Profile.objects.create(username=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+       instance.profile.save()
 
     def __str__(self):
         return self.username.username
