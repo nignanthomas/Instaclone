@@ -12,7 +12,7 @@ from django.db.models import Q
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def timeline(request):
-    posts= Post.objects.all()
+    posts= Post.objects.all().order_by("-id")
     profiles= Profile.objects.all()
     current_user = request.user
 
