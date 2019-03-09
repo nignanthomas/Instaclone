@@ -92,6 +92,18 @@ class Comment(models.Model):
         self.save()
 
 
+class Like(models.Model):
+    username = models.ForeignKey(User,on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    control = models.CharField(max_length=50,unique=True, null=True)
+
+    # def __str__(self):
+    #     return self.username
+
+    def save_comment(self):
+        self.save()
+
+
 # class Follower(models.Model):
 #     username = models.ForeignKey(User)
 #     followers = models.ForeignKey(User)

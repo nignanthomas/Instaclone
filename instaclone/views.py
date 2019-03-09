@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Post,Profile,Comment
-from .forms import NewPostForm,ProfileForm,CommentForm
+from .models import Post,Profile,Comment,Like
+from .forms import NewPostForm,ProfileForm,CommentForm,LikeForm
 # from .forms import PostForm,LocationForm,ProfileForm,CommentForm
 # from django.http import JsonResponse
 # import json
@@ -17,6 +17,43 @@ def timeline(request):
     current_user = request.user
 
     comments=Comment.objects.all()
+    likes = Like.objects.all()
+    likecounter =0
+
+
+    for post in posts:
+        num_likes=0
+        for like in likes:
+            if post.id == like.post.id:
+                num_likes +=1
+        post.likes = num_likes
+        post.save()
+        print(str(post.id) + " " +str(num_likes))
+
+
+
+
+    if request.method == 'POST' and 'liker' in request.POST:
+        post_id = request.POST.get("liker")
+        likeform = LikeForm(request.POST)
+        if likeform.is_valid():
+            post_id = int(request.POST.get("liker"))
+            post = Post.objects.get(id = post_id)
+            like = likeform.save(commit=False)
+            like.username = request.user
+            like.post = post
+            like.control = str(like.username.id)+"-"+str(like.post.id)
+            like.save()
+            print("like saved")
+
+        return redirect("timeline")
+    else:
+        likeform = LikeForm()
+
+
+
+
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -31,7 +68,9 @@ def timeline(request):
     else:
         form = CommentForm()
 
-    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form,})
+    posts= Post.objects.all().order_by("-id")
+
+    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form, "likeform":likeform, "likes":likes, "likecounter":likecounter,})
 
 
 @login_required(login_url='/accounts/login/')

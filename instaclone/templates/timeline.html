@@ -39,6 +39,16 @@
             <div class="card-body">
               <div class="card-footer-section">
                 <h5 class="card-title username">{{post.likes}} likes</h5>
+                
+
+
+                <form action="{%url 'timeline'%}" method="post" enctype="multipart/form-data">
+                  {%csrf_token%}
+                    <input type="hidden" name="liker" style="position:relative;left:10px" value='{{post.id}}'>
+                    <button class="btn btn-default" type="submit">Like</button>
+                </form>
+
+
                 <p class="card-text username">{{post.username}} <span class="caption"> {{post.caption | safe}}</span></p>
                 <br>
                 <div id="card{{post.id}}" class="mt-2">
