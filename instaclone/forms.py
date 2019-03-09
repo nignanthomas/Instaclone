@@ -32,3 +32,9 @@ class LikeForm(forms.ModelForm):
     class Meta:
         model=Like
         exclude=['username','post','control']
+
+
+class FollowForm(forms.ModelForm):
+    class Meta:
+        model=Follow
+        exclude=['username','followed','follow_id']

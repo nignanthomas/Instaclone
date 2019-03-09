@@ -2,8 +2,8 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse,Http404,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Post,Profile,Comment,Like
-from .forms import NewPostForm,ProfileForm,CommentForm,LikeForm
+from .models import Post,Profile,Comment,Like,Follow,User
+from .forms import NewPostForm,ProfileForm,CommentForm,LikeForm,FollowForm
 # from .forms import PostForm,LocationForm,ProfileForm,CommentForm
 # from django.http import JsonResponse
 # import json
@@ -18,21 +18,14 @@ def timeline(request):
 
     comments=Comment.objects.all()
     likes = Like.objects.all()
-    likecounter =0
-
 
     for post in posts:
         num_likes=0
         for like in likes:
             if post.id == like.post.id:
                 num_likes +=1
-                print(like)
         post.likes = num_likes
         post.save()
-        print(str(post.id) + " " +str(num_likes))
-
-
-
 
     if request.method == 'POST' and 'liker' in request.POST:
         post_id = request.POST.get("liker")
@@ -51,17 +44,12 @@ def timeline(request):
     else:
         likeform = LikeForm()
 
-
     if request.method == 'POST' and 'unliker' in request.POST:
         post_id = request.POST.get("unliker")
         post = Post.objects.get(pk=post_id)
         control = str(request.user.id)+"-"+str(post.id)
         like_delete = Like.objects.get(control=control)
         like_delete.delete()
-
-
-
-
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -82,8 +70,7 @@ def timeline(request):
     likez = Like.objects.values_list('control', flat=True)
     likez =list(likez)
 
-
-    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form, "likeform":likeform, "likes":likes,"likez":likez, "likecounter":likecounter,})
+    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form, "likeform":likeform, "likes":likes,"likez":likez,})
 
 
 @login_required(login_url='/accounts/login/')
@@ -115,7 +102,47 @@ def profile(request,id):
     current_user = Profile.objects.get(username__id=request.user.id)
     user = Profile.objects.get(username__id=id)
     posts = Post.objects.filter(upload_by = user)
-    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,"user_object":user_object,})
+    follows = Follow.objects.all()
+
+    if request.method == 'POST' and 'follower' in request.POST:
+        print("follow saved")
+        followed_user_id = request.POST.get("follower")
+        followform = FollowForm(request.POST)
+        if followform.is_valid():
+            followed_user_id = int(request.POST.get("follower"))
+            current_user = Profile.objects.get(username__id=request.user.id)
+            follow = followform.save(commit=False)
+            follow.username = request.user
+            followed_user = User.objects.get(pk=followed_user_id)
+            print(followed_user)
+            follow.followed = followed_user
+            follow.follow_id = str(follow.username.id)+"-"+str(follow.followed.id)
+            follow.save()
+            print("follow saved")
+
+        return redirect("profile", user.username.id)
+    else:
+        followform = FollowForm()
+
+    if request.method == 'POST' and 'unfollower' in request.POST:
+        followed_user_id = request.POST.get("unfollower")
+        followed_user = User.objects.get(pk=followed_user_id)
+        follow_id = str(request.user.id)+"-"+str(followed_user.id)
+        follow_delete = Follow.objects.get(follow_id=follow_id)
+        follow_delete.delete()
+
+
+
+    follows = Follow.objects.all()
+    followz = Follow.objects.values_list('follow_id', flat=True)
+    followz =list(followz)
+
+
+    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,"user_object":user_object, "follows":follows, "followz":followz,})
+
+    def following(request):
+        if request.method == 'POST' and 'follower' in request.POST:
+            print("follow saved")
 
 @login_required(login_url='/accounts/login/')
 def new_post(request):

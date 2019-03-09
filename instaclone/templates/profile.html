@@ -32,10 +32,36 @@
 
       {% endif %}
 
+
       {% if user != current_user %}
-      <a href="">
-        <button class="btn btn-success"type="button" name="button"><img src="https://img.icons8.com/color/48/000000/human-footprints.png" width="24">Follow</button>
-      </a>
+
+          {% with temp=request.user.id|stringformat:"i"|add:"-"  %}
+          {% with follow=user.id|stringformat:"i" %}
+          {% with tempfollow=temp|add:follow %}
+
+
+          {% if tempfollow in followz %}
+
+          <form action="{%url 'profile' user.username.id%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+              <input type="hidden" name="unfollower" style="position:relative;left:10px" value='{{user.id}}'>
+              <button class="btn btn-danger"type="submit"><img src="https://img.icons8.com/color/48/000000/human-footprints.png" width="24">UnFollow</button>
+          </form>
+
+          {% else %}
+
+          <form action="{%url 'profile' user.username.id%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+              <input type="hidden" name="follower" style="position:relative;left:10px" value='{{user.id}}'>
+              <button class="btn btn-success"type="submit"><img src="https://img.icons8.com/color/48/000000/human-footprints.png" width="24">Follow</button>
+          </form>
+
+          {% endif %}
+
+          {% endwith %}
+          {% endwith %}
+          {% endwith %}
+
       {% endif %}
 
 

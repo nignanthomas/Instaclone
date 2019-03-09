@@ -100,14 +100,17 @@ class Like(models.Model):
     def __str__(self):
         return self.control
 
-    def save_comment(self):
+    def save_like(self):
         self.save()
 
 
-# class Follower(models.Model):
-#     username = models.ForeignKey(User)
-#     followers = models.ForeignKey(User)
-#
-# class Following(models.Model):
-#     username = models.ForeignKey(User)
-#     followings = models.ForeignKey(User)
+class Follow(models.Model):
+    username = models.ForeignKey(User, related_name='follower')
+    followed = models.ForeignKey(User, related_name='followed')
+    follow_id = models.CharField(max_length=50,unique=True, null=True)
+
+    def __str__(self):
+        return self.follow_id
+
+    def save_like(self):
+        self.save()
