@@ -39,14 +39,35 @@
             <div class="card-body">
               <div class="card-footer-section">
                 <h5 class="card-title username">{{post.likes}} likes</h5>
-                
 
+                {% with temp=request.user.id|stringformat:"i"|add:"-"  %}
+                {% with control=post.id|stringformat:"i" %}
+                {% with tempcontrol=temp|add:control %}
+
+
+                {% if tempcontrol in likez %}
+
+
+                <form action="{%url 'timeline'%}" method="post" enctype="multipart/form-data">
+                  {%csrf_token%}
+                    <input type="hidden" name="unliker" style="position:relative;left:10px" value='{{post.id}}'>
+                    <button class="btn btn-default" type="submit">UnLike</button>
+                </form>
+
+
+                {% else %}
 
                 <form action="{%url 'timeline'%}" method="post" enctype="multipart/form-data">
                   {%csrf_token%}
                     <input type="hidden" name="liker" style="position:relative;left:10px" value='{{post.id}}'>
                     <button class="btn btn-default" type="submit">Like</button>
                 </form>
+
+                {% endif %}
+
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
 
 
                 <p class="card-text username">{{post.username}} <span class="caption"> {{post.caption | safe}}</span></p>

@@ -26,6 +26,7 @@ def timeline(request):
         for like in likes:
             if post.id == like.post.id:
                 num_likes +=1
+                print(like)
         post.likes = num_likes
         post.save()
         print(str(post.id) + " " +str(num_likes))
@@ -51,6 +52,14 @@ def timeline(request):
         likeform = LikeForm()
 
 
+    if request.method == 'POST' and 'unliker' in request.POST:
+        post_id = request.POST.get("unliker")
+        post = Post.objects.get(pk=post_id)
+        control = str(request.user.id)+"-"+str(post.id)
+        like_delete = Like.objects.get(control=control)
+        like_delete.delete()
+
+
 
 
 
@@ -69,8 +78,12 @@ def timeline(request):
         form = CommentForm()
 
     posts= Post.objects.all().order_by("-id")
+    likes = Like.objects.all()
+    likez = Like.objects.values_list('control', flat=True)
+    likez =list(likez)
 
-    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form, "likeform":likeform, "likes":likes, "likecounter":likecounter,})
+
+    return render(request,'timeline.html',{"posts":posts,"profiles":profiles,"current_user":current_user,"comments":comments,"form":form, "likeform":likeform, "likes":likes,"likez":likez, "likecounter":likecounter,})
 
 
 @login_required(login_url='/accounts/login/')
