@@ -90,9 +90,9 @@ a:active {
 
 /* Masonry on smallest screens */
 @media only screen and (max-width: 539px) {
-  body {
+  /* body {
     width: 100%;
-  }
+  } */
   .phone-section {
     display: none;
   }
