@@ -80,12 +80,38 @@ a:active {
 
 /* Masonry on medium-sized screens */
 @media only screen and (max-width: 1023px) and (min-width: 768px) {
+  .phone-section {
+    display: none;
+  }
 
+  .form-section{
+    width: 100%;
+    height: 100%;
+  }
+
+  .footer{
+    margin-top: 15%;
+    color:blue;
+    display: block;
+  }
 }
 
 /* Masonry on small screens */
 @media only screen and (max-width: 767px) and (min-width: 540px) {
+  .phone-section {
+    display: none;
+  }
 
+  .form-section{
+    width: 100%;
+    height: 100%;
+  }
+
+  .footer{
+    margin-top: 15%;
+    color:blue;
+    display: block;
+  }
 }
 
 /* Masonry on smallest screens */
@@ -95,5 +121,16 @@ a:active {
   } */
   .phone-section {
     display: none;
+  }
+
+  .form-section{
+    width: 100%;
+    height: 100%;
+  }
+
+  .footer{
+    margin-top: 15%;
+    color:blue;
+    display: block;
   }
 }
