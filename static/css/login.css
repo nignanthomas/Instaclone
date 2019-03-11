@@ -78,7 +78,7 @@ a:active {
 
 
 
-/* Masonry on medium-sized screens */
+/* medium-sized screens */
 @media only screen and (max-width: 1023px) and (min-width: 768px) {
   .phone-section {
     display: none;
@@ -96,7 +96,7 @@ a:active {
   }
 }
 
-/* Masonry on small screens */
+/*  small screens */
 @media only screen and (max-width: 767px) and (min-width: 540px) {
   .phone-section {
     display: none;
@@ -114,7 +114,7 @@ a:active {
   }
 }
 
-/* Masonry on smallest screens */
+/* smallest screens */
 @media only screen and (max-width: 539px) {
   /* body {
     width: 100%;

@@ -12,7 +12,7 @@
 
   <div class="row">
 
-    <div class="col-md-8 col-lg-8">
+    <div class="col-md-8 col-lg-8 feed">
     <div class="row">
       {% for post in posts %}
           <div class="card mb-5" style="width: 75rem;">
@@ -33,14 +33,14 @@
                                                                     <p>{{post.caption}}</p>
                                                                     <p>Location: {{post.location}}</p>'>
 
-            <img src="{{post.photo_pic.url}}" class="gallery-image ml-1" height="500" width="750">
+            <img src="{{post.photo_pic.url}}" class="gallery-image ml-1" height="99%" width="99%">
             </a>
 
             <p class="card-text username"><span class="caption"> {{post.caption | safe}}</span></p>
 
             <div class="card-body">
               <div class="card-footer-section">
-                <h5 class="card-title username">{{post.likes}} likes</h5>
+                <h5 class="card-title username float-left">{{post.likes}} likes</h5>
 
                 {% with temp=request.user.id|stringformat:"i"|add:"-"  %}
                 {% with control=post.id|stringformat:"i" %}
@@ -107,16 +107,17 @@
 
     </div>
 
-    <div class="col-md-2 col-lg-2">
+    <div class="col-md-1 col-lg-1">
 
     </div>
 
 
 
 
-    <div class="col-md-2">
+    <div class="col-md-3 users-right">
       <div class="card">
         <div class="card-body">
+          <hr>
           {% for profile in profiles%}
 
           <div class="users-image">
@@ -126,6 +127,8 @@
               <img src="https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" class="rounded img-fluid" alt=""  width="75px" height="75px">
             {% endif %}
             <p  class="profile-username">  <a href="{% url 'profile' profile.username.id %}">{{profile.username}}</a></p>
+
+            <hr>
 
           </div>
 
