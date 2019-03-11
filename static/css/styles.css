@@ -83,7 +83,9 @@ a {
 
 /* medium-sized screens */
 @media only screen and (max-width: 1023px) and (min-width: 768px) {
-
+  body {
+    width: auto;
+  }
 }
 
 
@@ -94,6 +96,10 @@ a {
 
 /* smallest screens */
 @media only screen and (max-width: 539px) {
+  body{
+    width: auto;
+    margin: 0;
+  }
   .users-right {
     display: none;
   }
@@ -101,4 +107,30 @@ a {
     width: inherit: ;
     height: inherit: ;
   }
+  #navbar {
+    width: 100%;
+    display: inline-block;
+  }
+  #nav-container{
+    margin: 0 auto;
+    text-align: center;
+  }
+  #right {
+      float: left;
+      width: auto;
+      height: 20px;
+  }
+  #center{
+    display: none;
+  }
+  .nav-icon {
+    /* float: right;
+    width: 26px; */
+    margin-right: 20px;
+    /* padding: 5px; */
+  }
+  .search-card {
+    width: 100% !important;
+  }
+
 }
