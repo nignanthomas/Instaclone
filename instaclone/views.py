@@ -136,13 +136,21 @@ def profile(request,id):
     follows = Follow.objects.all()
     followz = Follow.objects.values_list('follow_id', flat=True)
     followz =list(followz)
+    follower =0
+    following = 0
+    for follow in followz:
+        follow = follow.split("-")
+        if follow[0] == str(user.username.id):
+            following+=1
+        if follow[-1] == str(user.username.id):
+            follower+=1
 
 
-    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,"user_object":user_object, "follows":follows, "followz":followz,})
+    return render(request, "profile.html", {"current_user":current_user,"posts":posts,"user":user,"user_object":user_object, "follows":follows, "followz":followz,"follower":follower,"following":following})
 
-    def following(request):
-        if request.method == 'POST' and 'follower' in request.POST:
-            print("follow saved")
+    # def following(request):
+    #     if request.method == 'POST' and 'follower' in request.POST:
+    #         print("follow saved")
 
 @login_required(login_url='/accounts/login/')
 def new_post(request):
